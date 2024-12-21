@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: blueviolet;
+}
+h2 {
+  padding: 1.5rem;
+  margin: 1rem;
+}
+
+.table {
+  overflow: hidden;
+}
+.wrapper {
+  width: 680px;
+  margin: 5rem auto;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+div h2 {
+  text-align: center;
+}
+
+table a {
+  margin-right: 1rem;
+}
