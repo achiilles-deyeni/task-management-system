@@ -1,11 +1,13 @@
 // Importing express and bodyparser
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
 const homeRoute = require("./routes/tasks");
 
 const app = express();
+dotenv.config();
 
 // Database configuration
 mongoose.connect("mongodb://127.0.0.1:27017/daily-tasks", {

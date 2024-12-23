@@ -52,6 +52,7 @@ router.post("/edit/:id", protect, (req, res, next) => {
       if (!task) {
         return res.status(404).send("Task not found");
       }
+      alert("Task updated successfully");
       console.log("Task updated successfully");
       res.redirect("/tasks");
     })

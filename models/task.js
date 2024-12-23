@@ -13,11 +13,11 @@ const TaskSchema = new Schema(
       enum: ["pending", "completed"],
       default: "pending",
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
   },
   { timestamps: true }
 );

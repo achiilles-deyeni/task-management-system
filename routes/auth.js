@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const User = require("../models/task");
+const User = require("../models/users"); // Correct the model import
 
 // Registration routes
 router.get("/", (req, res, next) => {
@@ -9,13 +9,13 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/register", async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = new User({ username, email, password });
+    const user = new User({ name, email, password });
     await user.save();
     console.log("User registered successfully");
     res.redirect("/login");
@@ -33,7 +33,7 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email });
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -41,7 +41,8 @@ router.post("/login", async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.json({ token });
+    res.cookie("token", token, { httpOnly: true });
+    res.redirect("/index");
   } catch (err) {
     next(err);
   }
