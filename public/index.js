@@ -1,3 +1,4 @@
+const name = require("../models/tasks");
 const getDate = () => {
   const today = new Date();
   const options = {
@@ -17,14 +18,35 @@ function upper() {
   input.value = input.value.toUpperCase();
 }
 
-// notifications
-function notify() {
-  Notification.requestPermission().then(
-    alert("Would you like to receive notifications from this site?")
-  );
-  if (perm === "granted") {
-    setInterval(() => {
-      alert("You have uncompleted tasks.");
-    }, 3600000);
+// notifications api
+
+window.onload = () => {
+  Notification.permission;
+
+  Notification.requestPermission().then((result) => {
+    console.log(result);
+  });
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications");
+    return;
   }
-}
+
+  Notification.requestPermission().then((permission) => {
+    // set the button to show or hide the notification
+    notificationBtn.style.display = permission === "granted" ? "none" : "block";
+  });
+};
+
+// Creatiing a new Notification
+const img = "/image source";
+const text = `You've got "${name}" to complete`;
+const notification = new Notification("To do list", { body: text, icon: img });
+
+// closing the notification when overdue
+
+const n = new Notification("To do list", { body: text, icon: img });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    n.close();
+  }
+});

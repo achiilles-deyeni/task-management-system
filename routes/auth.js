@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const User = require("../models/users"); // Correct the model import
+const tasks = require("../routes/tasks");
+const User = require("../models/users");
 
 // Registration routes
 router.get("/", (req, res, next) => {
@@ -42,7 +43,7 @@ router.post("/login", async (req, res, next) => {
       expiresIn: "1h",
     });
     res.cookie("token", token, { httpOnly: true });
-    res.redirect("/index");
+    res.redirect("/tasks");
   } catch (err) {
     next(err);
   }
