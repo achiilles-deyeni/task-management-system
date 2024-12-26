@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Tasks = require("../models/task");
 const { protect } = require("../middleware/authenticate");
+const Tasks = require("../models/task");
 
 // Route to get all tasks
 router.get("/tasks", protect, (req, res, next) => {
@@ -10,7 +10,7 @@ router.get("/tasks", protect, (req, res, next) => {
       res.render("index", { tasks });
     })
     .catch((err) => {
-      console.log("Something went wrong with the request");
+      console.log("Something went wrong with the request:", err.message);
       next(err);
     });
 });
@@ -26,7 +26,7 @@ router.post("/tasks", protect, (req, res, next) => {
       res.redirect("/tasks");
     })
     .catch((err) => {
-      console.log("Task creation failed");
+      console.log("Task creation failed:", err.message);
       next(err);
     });
 });
@@ -41,7 +41,7 @@ router.get("/edit/:id", protect, (req, res, next) => {
       res.render("edit", { task });
     })
     .catch((err) => {
-      console.log("Could not retrieve task for edit");
+      console.log("Could not retrieve task for edit:", err.message);
       next(err);
     });
 });
@@ -52,12 +52,11 @@ router.post("/edit/:id", protect, (req, res, next) => {
       if (!task) {
         return res.status(404).send("Task not found");
       }
-      alert("Task updated successfully");
       console.log("Task updated successfully");
       res.redirect("/tasks");
     })
     .catch((err) => {
-      console.log("Task update failed");
+      console.log("Task update failed:", err.message);
       next(err);
     });
 });
@@ -73,7 +72,7 @@ router.get("/delete/:id", protect, (req, res, next) => {
       res.redirect("/tasks");
     })
     .catch((err) => {
-      console.log("Task deletion failed");
+      console.log("Task deletion failed:", err.message);
       next(err);
     });
 });

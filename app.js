@@ -1,13 +1,12 @@
-// Importing express and bodyparser
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
-const homeRoute = require("./routes/tasks");
+const tasksRoute = require("./routes/tasks");
+const { protect } = require("./middleware/authenticate");
 
 const app = express();
-dotenv.config();
 
 // Database configuration
 mongoose.connect("mongodb://127.0.0.1:27017/daily-tasks", {
@@ -29,10 +28,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
-// Routing only
+// Routing
 app.use("/register", authRoute);
-app.use("/", authRoute); // Set the default route to the register route
-app.use("/tasks", homeRoute);
+// app.use("/login", authRoute);
+app.use("/", authRoute); // Ensure root uses authRoute
+app.use("/", protect, tasksRoute); // Use protect for tasks routes
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port 3000");
