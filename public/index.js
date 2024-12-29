@@ -11,6 +11,14 @@ const getDate = () => {
 const heading = document.getElementById("heading");
 heading.innerHTML = getDate();
 
+const getYear = () => {
+  const year = new Date().getFullYear();
+  return year;
+};
+
+const footerYear = document.querySelector("span");
+footerYear.innerHTML = getYear();
+
 // making every input uppersace
 function upper() {
   const input = document.querySelector("input");

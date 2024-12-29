@@ -30,7 +30,8 @@ nav a {
   padding: 1rem;
 }
 
-div h2 {
+div h2,
+footer {
   text-align: center;
 }
 
