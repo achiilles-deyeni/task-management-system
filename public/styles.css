@@ -10,6 +10,16 @@ h2 {
   margin: 1rem;
 }
 
+nav {
+  position: relative;
+}
+nav a {
+  justify-content: right;
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+}
+
 .table {
   overflow: hidden;
 }

@@ -3,16 +3,17 @@ const router = express.Router();
 const { protect } = require("../middleware/authenticate");
 const Tasks = require("../models/task");
 
-// Route to get all tasks
-router.get("/tasks", protect, (req, res, next) => {
-  Tasks.find({ user: req.user._id })
-    .then((tasks) => {
-      res.render("index", { tasks });
-    })
-    .catch((err) => {
-      console.log("Something went wrong with the request:", err.message);
-      next(err);
-    });
+router.get("/tasks", protect, async (req, res) => {
+  try {
+    const tasks = await Tasks.find({ user: req.user._id });
+    if (req.headers.accept.includes("application/json")) {
+      return res.json({ tasks });
+    }
+    res.render("index", { tasks });
+  } catch (err) {
+    console.error("Error fetching tasks:", err);
+    res.status(500).json({ message: "Error fetching tasks" });
+  }
 });
 
 // Route to create a task

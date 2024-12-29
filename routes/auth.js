@@ -12,7 +12,7 @@ router.get("/", (req, res, next) => {
 router.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -31,10 +31,10 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -42,11 +42,28 @@ router.post("/login", async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true });
-    res.redirect("/tasks");
+
+    // Set token as HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use secure in production
+      sameSite: "strict",
+      maxAge: 3600000, // 1 hour in milliseconds
+    });
+
+    res.json({
+      success: true,
+      message: "Login successful",
+    });
   } catch (err) {
-    next(err);
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error" });
   }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
 });
 
 module.exports = router;

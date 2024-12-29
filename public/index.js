@@ -1,4 +1,3 @@
-const name = require("../models/tasks");
 const getDate = () => {
   const today = new Date();
   const options = {
@@ -9,7 +8,7 @@ const getDate = () => {
   const date = today.toLocaleDateString("en-US", options);
   return date;
 };
-const heading = document.querySelector("h2");
+const heading = document.getElementById("heading");
 heading.innerHTML = getDate();
 
 // making every input uppersace
@@ -33,13 +32,13 @@ window.onload = () => {
 
   Notification.requestPermission().then((permission) => {
     // set the button to show or hide the notification
-    notificationBtn.style.display = permission === "granted" ? "none" : "block";
+    notification.style.display = permission === "granted" ? "none" : "block";
   });
 };
 
 // Creatiing a new Notification
 const img = "/image source";
-const text = `You've got "${name}" to complete`;
+const text = `You've got some tasks to complete`;
 const notification = new Notification("To do list", { body: text, icon: img });
 
 // closing the notification when overdue

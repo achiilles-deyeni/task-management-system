@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
 const tasksRoute = require("./routes/tasks");
 const { protect } = require("./middleware/authenticate");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
+app.use(cookieParser());
 
 // Routing
 app.use("/register", authRoute);

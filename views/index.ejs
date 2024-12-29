@@ -17,8 +17,11 @@
     <title>To do list</title>
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg">
+      <a href="/logout">logout</a>
+    </nav>
     <div class="container bg-light wrapper">
-      <h2 class="bg-light"></h2>
+      <h2 class="bg-light" id="heading"></h2>
       <div class="table-responsive table">
       <table class="table table-striped table-hover">
         <thead >
@@ -46,13 +49,14 @@
         </tbody>
       </table>
     </div>
-      <form action="/tasks" method="post" class="form-container ">
+      <form action="/tasks" method="post" class="form-container " onsubmit="fetchTasks()">
         <input type="text" name="name" id="name" class="form-control" placeholder="add task" oninput="upper()"/><br />
 
         <input type="submit" class="btn btn-primary form-control" value="submit"></input>
 
       </form>
     </div>
+    <script src="tasks.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
