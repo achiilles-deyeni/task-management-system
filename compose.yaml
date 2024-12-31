@@ -1,0 +1,20 @@
+services:
+  todo-app:
+    build:
+      context: ./app
+    depends_on:
+      - todo-app
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - path: ./app/package.json
+          action: rebuild
+        - path: ./app
+          target: /usr/src/app
+          action: sync
+
+  todo-database:
+    command: "npm run dev"
