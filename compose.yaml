@@ -1,11 +1,16 @@
 services:
+  # frontend container
   todo-app:
     build:
       context: ./app
     depends_on:
-      - todo-app
+      - todo-database
     environment:
-      - NODE_ENV=production
+      # NODE_ENV: production
+      PORT: 3000
+      MONGODB_URL: mongodb://db_container:27017
+      DB_NAME: daily-tasks
+      NAME: daily-tasks
     ports:
       - "3000:3000"
     develop:
@@ -16,5 +21,13 @@ services:
           target: /usr/src/app
           action: sync
 
+  # Mongobd container
   todo-database:
-    command: "npm run dev"
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    volumes:
+      - todo-database:/data/db
+
+volumes:
+  todo-database: {}
