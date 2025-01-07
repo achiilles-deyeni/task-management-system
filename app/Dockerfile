@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
-ARG NODE_VERSION: 20.18.0
+ARG NODE_VERSION=20.18.0
 
-FROM node:${20.18.0}-alpine
+FROM node:${NODE_VERSION}-alpine
 
 WORKDIR /usr/src/app
 
@@ -13,6 +13,6 @@ RUN npm ci
 
 COPY . .
 
-CMD npm run dev
+CMD ["npm", "start"]
 
 EXPOSE 3000

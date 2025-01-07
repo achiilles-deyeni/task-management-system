@@ -8,7 +8,7 @@ services:
     environment:
       # NODE_ENV: production
       PORT: 3000
-      MONGODB_URL: mongodb://db_container:27017
+      MONGODB_URL: mongodb://todo-database:27017
       DB_NAME: daily-tasks
       NAME: daily-tasks
     ports:

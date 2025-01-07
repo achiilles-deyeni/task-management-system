@@ -1,4 +1,6 @@
 require("dotenv").config();
+// const cors = require("cors");
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -10,10 +12,23 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 // Database configuration
-mongoose.connect("mongodb://127.0.0.1:27017/daily-tasks", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect("mongodb://127.0.0.1:27017/daily-tasks", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// const db = mongoose.connection;
+
+// db.once("open", () => {
+//   console.log("Connected to MongoDB");
+// });
+// db.on("error", (err) => {
+//   console.error("Something went wrong connecting to MongoDB", err);
+// });
+
+const mongoUrl = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017";
+const dbName = process.env.DB_NAME || "daily-tasks";
+
+mongoose.connect(`${mongoUrl}/${dbName}`);
 const db = mongoose.connection;
 
 db.once("open", () => {
@@ -23,11 +38,20 @@ db.on("error", (err) => {
   console.error("Something went wrong connecting to MongoDB", err);
 });
 
+// const corsOptions = {
+//   origin: process.env.CORS_ORIGIN || "*",
+//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true,
+//   maxAge: 86400, // 24 hours
+// };
 // Middleware
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+// app.use(cors(corsOptions));
 app.use(cookieParser());
 
 // Routing
