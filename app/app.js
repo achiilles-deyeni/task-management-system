@@ -1,5 +1,4 @@
 require("dotenv").config();
-// const cors = require("cors");
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -38,25 +37,16 @@ db.on("error", (err) => {
   console.error("Something went wrong connecting to MongoDB", err);
 });
 
-// const corsOptions = {
-//   origin: process.env.CORS_ORIGIN || "*",
-//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-//   credentials: true,
-//   maxAge: 86400, // 24 hours
-// };
 // Middleware
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// app.use(cors(corsOptions));
 app.use(cookieParser());
 
 // Routing
 app.use("/register", authRoute);
-// app.use("/login", authRoute);
 app.use("/", authRoute); // Ensure root uses authRoute
 app.use("/", protect, tasksRoute); // Use protect for tasks routes
 
